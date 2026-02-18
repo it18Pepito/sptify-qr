@@ -8,3 +8,5 @@ Route::get('/', function () {
 });
 
 Route::get('/download-app', [DownloadController::class, 'index']);
+Route::get('/download-app/{slug}', [DownloadController::class, 'bySlug']);
+
