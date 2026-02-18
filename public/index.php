@@ -1,28 +1,20 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 
-use Dotenv\Dotenv;
-use App\Controllers\DownloadController;
+define('LARAVEL_START', microtime(true));
 
-// Load .env
-$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
-$dotenv->load();
+// Determine if the application is in maintenance mode...
+if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
+    require $maintenance;
+}
 
-// Database Connection
-$dbConfig = (require __DIR__ . '/../app/config/database.php')();
-Flight::register('db', 'PDO', $dbConfig, function ($db) {
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-});
+// Register the Composer autoloader...
+require __DIR__.'/../vendor/autoload.php';
 
-// Paths
-Flight::set('flight.views.path', __DIR__ . '/../views');
+// Bootstrap Laravel and handle the request...
+/** @var Application $app */
+$app = require_once __DIR__.'/../bootstrap/app.php';
 
-// Routes
-Flight::route('/', function () {
-    Flight::redirect('/download-app');
-});
-
-Flight::route('/download-app', [new DownloadController(), 'index']);
-
-Flight::start();
+$app->handleRequest(Request::capture());
