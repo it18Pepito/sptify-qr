@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#053725">
-    <title>Download Apps</title>
+    <title>Download Pepi Plus</title>
     <link rel="icon" type="image/webp" href="{{ asset('assets/pepi-plus-logo.webp') }}">
     <style>
         * {
@@ -274,56 +274,50 @@
             }
         }
     </style>
-<script>
-    window.onload = function() {
-        setTimeout(function() {
-
-            const redirectUrl = @json($redirectUrl ?? null);
-            const storeName = @json(
-                $storeType === 'app_store'
-                    ? 'App Store'
-                    : 'Google Play Store'
-            );
-
-            if (!redirectUrl) {
-                console.error('Redirect URL not found');
-                return;
-            }
-
-            // Update subtitle
-            document.querySelector('.subtitle').textContent =
-                'Taking you to the ' + storeName + '...';
-
-            // Redirect after delay (FLOW SAMA)
+    <script>
+        window.onload = function() {
+            // Jeda 300ms sebelum menjalankan kode
             setTimeout(function() {
-                window.location.href = redirectUrl;
-
-                // After redirect animation
+                var ua = navigator.userAgent || navigator.vendor || window.opera;
+                var redirectUrl;
+                var storeName;
+                if (/android/i.test(ua)) {
+                    redirectUrl = "https://play.google.com/store/apps/details?id=id.loyal.pepito&pcampaignid=web_share";
+                    storeName = "Google Play Store";
+                } else if (/iPad|iPhone|iPod/.test(ua)) {
+                    redirectUrl = "https://apps.apple.com/id/app/pepi-plus/id6752885751";
+                    storeName = "App Store";
+                } else {
+                    redirectUrl = "https://play.google.com/store/apps/details?id=id.loyal.pepito&pcampaignid=web_share";
+                    storeName = "Play Store";
+                }
+                // Show loader with dynamic store name
+                document.querySelector('.subtitle').textContent = 'Taking you to the ' + storeName + '...';
+                // Redirect after 1 second
                 setTimeout(function() {
-                    document.querySelector('.loader').style.display = 'none';
-                    document.querySelector('.checkmark').classList.add('show');
-                    document.querySelector('.subtitle').textContent = '';
-                    document.querySelector('.redirect-message').textContent =
-                        'Thanks for downloading!';
-                }, 500);
+                    window.location.href = redirectUrl;
 
-            }, 400);
-
-        }, 800);
-    };
-</script>
-
+                    // Show thank you message after redirect
+                    setTimeout(function() {
+                        document.querySelector('.loader').style.display = 'none';
+                        document.querySelector('.checkmark').classList.add('show');
+                        document.querySelector('.subtitle').textContent = '';
+                        document.querySelector('.redirect-message').textContent = 'Thanks for downloading!';
+                    }, 500);
+                }, 400);
+            }, 800);
+        };
+    </script>
 </head>
 
 <body>
     <div class="container">
         <div class="logo">
-            <img src="{{ asset($app->logo) }}" alt="{{ $app->app_name }} Logo">
+            <img src="{{ asset('assets/pepi-plus-logo.webp') }}" alt="Pepi Plus Logo">
         </div>
 
-        <h1>{{ $app->app_name }}</h1>
-        {{-- Message --}}
-        <p class="subtitle"></p>
+        <h1>Pepi Plus</h1>
+        <p class="subtitle">Your Privilege, Infinite Rewards</p>
 
         <div class="loader"></div>
 
@@ -335,7 +329,7 @@
         <p class="redirect-message"></p>
 
         <div class="store-buttons">
-            <a href="{{ $storeType === 'app_store' ? $redirectUrl : '#' }}" class="store-button app-store-btn"
+            <a href="https://apps.apple.com/id/app/pepi-plus/id6752885751" class="store-button app-store-btn"
                 target="_blank">
                 <img src="{{ asset('assets/apple-logo.png') }}" style="width: 24px" />
                 <div class="button-text">
@@ -344,7 +338,7 @@
                 </div>
             </a>
 
-            <a href="{{ $storeType === 'play_store' ? $redirectUrl : '#' }}"
+            <a href="https://play.google.com/store/apps/details?id=id.loyal.pepito&pcampaignid=web_share"
                 class="store-button play-store-btn" target="_blank">
                 <img src="{{ asset('assets/playstore-logo.png') }}" style="width: 24px" />
                 <div class="button-text">
