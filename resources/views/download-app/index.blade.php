@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#053725">
-    <title>Download Apps</title>
+    <title>Download {{ $app->app_name }} Apps</title>
     <link rel="icon" type="image/webp" href="{{ asset('assets/pepi-plus-logo.webp') }}">
     <style>
         * {
